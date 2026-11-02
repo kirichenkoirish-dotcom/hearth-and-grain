@@ -31,6 +31,7 @@ export function Footer() {
             Drop your email and we’ll share the most unforgettable moments and offers!
           </p>
           <NewsletterForm />
+          <SocialLinks />
         </FooterColumn>
       </div>
 
@@ -41,6 +42,32 @@ export function Footer() {
         </div>
       </div>
     </footer>
+  );
+}
+
+const socialLinks = [
+  { href: "https://www.instagram.com/", label: "Instagram", icon: "/images/icons/instagram.svg" },
+  { href: "https://www.behance.net/", label: "Behance", icon: "/images/icons/behance.svg" },
+  { href: "https://www.youtube.com/", label: "YouTube", icon: "/images/icons/youtube.svg" },
+];
+
+function SocialLinks() {
+  return (
+    <ul className="mt-[31px] flex gap-[30px]">
+      {socialLinks.map((link) => (
+        <li key={link.label}>
+          <a
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={link.label}
+            className="block transition-opacity hover:opacity-80"
+          >
+            <Image src={link.icon} alt="" width={29} height={29} />
+          </a>
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -62,17 +89,18 @@ function FooterLinks({ links }: { links: { href: string; label: string }[] }) {
         <li key={link.href}>
           <Link
             href={link.href}
-            className="flex items-center justify-between rounded-[7px] border border-cream/30 py-[5px] pr-[15px] pl-[25px] text-lg leading-[1.4] font-medium transition-colors hover:border-cream/60"
+            className="group flex items-center justify-between rounded-[7px] border border-cream/30 py-[5px] pr-[15px] pl-[25px] text-lg leading-[1.4] font-medium transition-colors duration-300 hover:border-cream/60"
           >
             {link.label}
-            {/* Иконка в Figma — стрелка вниз, повёрнутая на 225°, поэтому смотрит вверх-вправо */}
+            {/* Иконка в Figma — стрелка вниз, повёрнутая на 225° (смотрит вверх-вправо).
+                При наведении (Figma: Frame 19933) поворачивается до 270° и смотрит вправо. */}
             <span className="flex size-[35px] items-center justify-center">
               <Image
                 src="/images/icon-arrow-orange.svg"
                 alt=""
                 width={25}
                 height={25}
-                className="rotate-225"
+                className="rotate-225 transition-transform duration-300 group-hover:rotate-270"
               />
             </span>
           </Link>

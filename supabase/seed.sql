@@ -1,6 +1,6 @@
 -- Тестовое меню из макета Figma.
 -- Цены: доллары из макета ×4 с округлением, записаны в грошах (1400 = 14 zł).
--- Фото добавим на этапе 3.
+-- Фото лежат в public/images/dishes/<slug>.jpg (путь записывается в конце файла).
 
 insert into public.categories (name, slug, sort_order) values
   ('Coffee, Drinks',      'coffee-drinks',       1),
@@ -32,3 +32,5 @@ from (values
   ('something-sweet', 'Seasonal Fruit Galette', 'seasonal-fruit-galette', 'Whatever''s ripe this week.',         2800, 3)
 ) as d (category_slug, name, slug, description, price_grosze, sort_order)
 join public.categories c on c.slug = d.category_slug;
+
+update public.dishes set image_url = '/images/dishes/' || slug || '.jpg';

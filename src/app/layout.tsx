@@ -33,6 +33,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      // Подсказка Next.js: плавная прокрутка включена в CSS, но при переходе между страницами её надо выключать
+      data-scroll-behavior="smooth"
       className={`${workSans.variable} ${instrumentSans.variable} ${playfair.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col font-sans">

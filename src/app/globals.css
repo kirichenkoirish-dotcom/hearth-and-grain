@@ -13,11 +13,81 @@
   --color-espresso: #251810; /* фон подвала */
   --color-roast-dark: #522a17; /* начало градиента кнопки */
   --color-roast: #b85f32; /* конец градиента кнопки */
+  --color-bark: #5f311a; /* рамки карточек и линии (обычно с прозрачностью 50%: border-bark/50) */
+  --color-caramel: #ad5a30; /* градиент больших заголовков: от caramel к cocoa */
+  --color-cocoa: #552c18;
 
   /* Шрифты: переменные --font-*-family создаёт next/font в layout.tsx */
   --font-sans: var(--font-work-sans-family), system-ui, sans-serif;
   --font-display: var(--font-instrument-sans-family), system-ui, sans-serif;
   --font-logo: var(--font-playfair-family), Georgia, serif;
+}
+
+/*
+  Кнопка с градиентом (Component 1 в Figma).
+  При наведении градиент «переворачивается»: светлая сторона уходит влево.
+  Сам градиент плавно менять CSS не умеет, поэтому кладём под текст второй слой
+  с перевёрнутым градиентом и плавно меняем его прозрачность.
+*/
+@utility btn-roast {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: rgb(255 255 255 / 0.9);
+  background-image: linear-gradient(104deg, var(--color-roast-dark) 6%, var(--color-roast) 94%);
+  transition: color 300ms;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: linear-gradient(90deg, #b55e32, #552c18 82%);
+    opacity: 0;
+    transition: opacity 300ms;
+  }
+
+  &:hover:not(:disabled),
+  &:focus-visible {
+    color: white;
+  }
+
+  &:hover:not(:disabled)::before,
+  &:focus-visible::before {
+    opacity: 1;
+  }
+
+  &:disabled {
+    background-image: none;
+    background-color: #9a9a9a;
+    cursor: not-allowed;
+  }
+}
+
+/*
+  Описание блюда в карточке (Figma: фрейм hover).
+  Только на устройствах с мышкой — (hover: hover) — описание спрятано
+  и появляется при наведении на карточку или при переходе на неё клавишей Tab.
+*/
+@media (hover: hover) {
+  .dish-card-reveal {
+    grid-template-rows: 0fr;
+    opacity: 0;
+  }
+
+  .group:hover .dish-card-reveal,
+  .group:focus-within .dish-card-reveal {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+}
+
+/* Плавная прокрутка к якорям (#coffee-drinks и т. п.).
+   Если человек отключил анимации в настройках системы, прокрутка остаётся мгновенной. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
