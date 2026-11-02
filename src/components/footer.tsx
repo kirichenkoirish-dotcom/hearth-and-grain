@@ -38,7 +38,7 @@ export function Footer() {
       <div className="border-t border-cream/60">
         <div className="mx-auto flex max-w-[1440px] flex-col gap-2 px-4 py-8 text-base text-cream/60 md:flex-row md:justify-between md:px-10 md:text-lg">
           <p>Copyrights are reserved @ Hearth &amp; Grain</p>
-          <p>Designed by Iryna Kyrychenko @ Senvori.Agency</p>
+          <p>Designed by Senvori.Agency</p>
         </div>
       </div>
     </footer>
