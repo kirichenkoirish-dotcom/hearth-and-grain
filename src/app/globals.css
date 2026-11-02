@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+/*
+  Design tokens — цвета и шрифты из Figma.
+  Всё, что объявлено в @theme, Tailwind превращает в классы:
+  --color-cream → bg-cream, text-cream, border-cream и т.д.
+*/
+@theme {
+  /* Цвета */
+  --color-cream: #e4d9ce; /* фон страниц (Color_BG в Figma) */
+  --color-accent: #d45f00; /* акцентный оранжевый (Accent) */
+  --color-accent-light: #ffa053; /* заголовки колонок в подвале */
+  --color-espresso: #251810; /* фон подвала */
+  --color-roast-dark: #522a17; /* начало градиента кнопки */
+  --color-roast: #b85f32; /* конец градиента кнопки */
+
+  /* Шрифты: переменные --font-*-family создаёт next/font в layout.tsx */
+  --font-sans: var(--font-work-sans-family), system-ui, sans-serif;
+  --font-display: var(--font-instrument-sans-family), system-ui, sans-serif;
+  --font-logo: var(--font-playfair-family), Georgia, serif;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-black);
+}

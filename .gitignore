@@ -1,16 +1,26 @@
 # Секретные ключи — никогда не попадают в git
 .env
-.env*.local
+.env*
 
 # Установленные библиотеки (ставятся заново командой npm install)
-node_modules/
+/node_modules
+/.pnp
+.pnp.*
 
 # Файлы сборки Next.js
-.next/
-out/
+/.next/
+/out/
+/build
+*.tsbuildinfo
+next-env.d.ts
 
 # Vercel
-.vercel/
+.vercel
 
-# Системный мусор macOS
+# Тесты
+/coverage
+
+# Логи и системный мусор
+npm-debug.log*
 .DS_Store
+*.pem
