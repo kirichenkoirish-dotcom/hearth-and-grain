@@ -1,0 +1,16 @@
+# Секретные ключи — никогда не попадают в git
+.env
+.env*.local
+
+# Установленные библиотеки (ставятся заново командой npm install)
+node_modules/
+
+# Файлы сборки Next.js
+.next/
+out/
+
+# Vercel
+.vercel/
+
+# Системный мусор macOS
+.DS_Store
