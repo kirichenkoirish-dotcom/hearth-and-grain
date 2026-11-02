@@ -24,3 +24,14 @@ export async function getMenu() {
 
 export type MenuCategory = Awaited<ReturnType<typeof getMenu>>[number];
 export type Dish = MenuCategory["dishes"][number];
+
+// Одно блюдо по адресу (slug) вместе с его категорией.
+// Берём из уже закэшированного меню, поэтому лишнего запроса к базе нет.
+export async function getDishBySlug(slug: string) {
+  const menu = await getMenu();
+  for (const category of menu) {
+    const dish = category.dishes.find((item) => item.slug === slug);
+    if (dish) return { dish, category };
+  }
+  return null;
+}
