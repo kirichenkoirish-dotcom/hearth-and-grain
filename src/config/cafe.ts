@@ -13,6 +13,16 @@ export const CAFE = {
   timeZone: "Europe/Warsaw",
 } as const;
 
+// Доставка. Деньги — в грошах: 1000 = 10 zł
+export const DELIVERY = {
+  feeGrosze: 1000,
+  // Минимум считается только по сумме блюд, без цены доставки
+  minimumOrderGrosze: 4000,
+} as const;
+
+// Сколько штук одного блюда можно положить в корзину
+export const MAX_QUANTITY_PER_DISH = 20;
+
 // Часы работы. Дни недели: 0 — воскресенье, 1 — понедельник … 6 — суббота
 export const OPENING_HOURS = {
   weekdays: { days: [1, 2, 3, 4, 5], opens: "07:00", closes: "17:00" },

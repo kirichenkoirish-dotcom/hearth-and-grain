@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { useCartCount } from "@/lib/cart-store";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -22,6 +23,7 @@ function isActiveLink(pathname: string, href: string) {
 export function Header() {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const cartCount = useCartCount();
   const closeMenu = () => setIsMenuOpen(false);
 
   return (
@@ -59,8 +61,26 @@ export function Header() {
           <IconLink href="/account" label="My account" onClick={closeMenu} isActive={isActiveLink(pathname, "/account")}>
             <AccountIcon />
           </IconLink>
-          <IconLink href="/cart" label="Cart" onClick={closeMenu} isActive={isActiveLink(pathname, "/cart")}>
-            <Image src="/images/icons/cart.svg" alt="" width={35} height={35} className="size-6 md:size-[26px]" />
+          <IconLink
+            href="/cart"
+            label={cartCount > 0 ? `Cart, ${cartCount} ${cartCount === 1 ? "item" : "items"}` : "Cart"}
+            onClick={closeMenu}
+            isActive={isActiveLink(pathname, "/cart")}
+          >
+            <span className="relative">
+              <Image src="/images/icons/cart.svg" alt="" width={35} height={35} className="size-6 md:size-[26px]" />
+              {cartCount > 0 && (
+                // key={cartCount} — при каждом изменении числа кружок создаётся заново
+                // и снова проигрывает анимацию «подпрыгивания»
+                <span
+                  key={cartCount}
+                  aria-hidden="true"
+                  className="animate-bump absolute -top-2 -right-2.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-accent px-1 text-[11px] leading-none font-semibold text-white"
+                >
+                  {cartCount}
+                </span>
+              )}
+            </span>
           </IconLink>
           <BookTableButton className="ml-1 hidden lg:flex" />
 

@@ -98,7 +98,7 @@ async function DishContent({ params }: { params: PageProps<"/menu/[slug]">["para
             <p className="font-display text-4xl leading-none font-medium tracking-[0.56px]">
               {formatPrice(dish.price_grosze)}
             </p>
-            <AddToCartButton dishName={dish.name} isAvailable={dish.is_available} />
+            <AddToCartButton dishId={dish.id} dishName={dish.name} isAvailable={dish.is_available} />
           </div>
 
           <Link

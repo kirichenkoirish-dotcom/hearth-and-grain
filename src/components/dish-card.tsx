@@ -45,7 +45,7 @@ export function DishCard({ dish }: { dish: Dish }) {
         <p className="font-display text-[28px] leading-none font-medium tracking-[0.56px]">
           {formatPrice(dish.price_grosze)}
         </p>
-        <AddToCartButton dishName={dish.name} isAvailable={dish.is_available} />
+        <AddToCartButton dishId={dish.id} dishName={dish.name} isAvailable={dish.is_available} />
       </div>
     </article>
   );

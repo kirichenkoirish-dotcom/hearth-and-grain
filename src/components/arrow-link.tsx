@@ -6,7 +6,8 @@ import Link from "next/link";
 export function ArrowLink({
   href,
   children,
-  className = "",
+  // Ширина по умолчанию — как в макете (225px); можно передать свою, например w-full
+  className = "w-[225px]",
 }: {
   href: string;
   children: React.ReactNode;
@@ -15,7 +16,7 @@ export function ArrowLink({
   return (
     <Link
       href={href}
-      className={`group btn-roast font-display inline-flex w-[225px] items-center justify-between rounded-full py-[11px] pr-[11px] pl-[30px] text-base leading-none font-medium tracking-[0.32px] ${className}`}
+      className={`group btn-roast font-display inline-flex items-center justify-between rounded-full py-[11px] pr-[11px] pl-[30px] text-base leading-none font-medium tracking-[0.32px] ${className}`}
     >
       {children}
       {/* Стрелка в иконке наклонена на 60°, поворот на 60° делает её горизонтальной */}

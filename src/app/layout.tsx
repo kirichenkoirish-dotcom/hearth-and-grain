@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Instrument_Sans, Playfair_Display, Work_Sans } from "next/font/google";
+import { CartHydrator } from "@/components/cart-hydrator";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import "./globals.css";
@@ -38,6 +39,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${workSans.variable} ${instrumentSans.variable} ${playfair.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col font-sans">
+        <CartHydrator />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

@@ -1,12 +1,13 @@
-import Image from "next/image";
 import { ArrowLink } from "@/components/arrow-link";
 import { CoffeeBadge } from "@/components/home/coffee-badge";
-import { Steam } from "@/components/home/steam";
+import { HeroVideo } from "@/components/home/hero-video";
 
-// Первый экран главной: слева текст и кнопка, справа большое фото со значком.
+// Первый экран главной: слева текст и кнопка, справа видео с паром над кофе и значок.
 export function HeroSection() {
   return (
-    <section className="mx-auto grid max-w-[1440px] gap-10 px-4 pt-28 md:px-10 lg:grid-cols-[minmax(0,661px)_minmax(0,646px)] lg:items-center lg:justify-between lg:gap-8 lg:pt-0">
+    // На компьютере у блока нет правого отступа, поэтому фото «приклеено» к правому краю экрана.
+    // Левый отступ на широких экранах подстраивается, чтобы текст стоял на одной линии с остальным сайтом.
+    <section className="mx-auto grid max-w-[1440px] gap-10 px-4 pt-28 md:px-10 lg:max-w-none lg:grid-cols-[minmax(0,661px)_minmax(0,646px)] lg:items-center lg:justify-between lg:gap-8 lg:pt-0 lg:pr-0 lg:min-h-[640px] lg:pl-[max(40px,calc((100vw-1360px)/2))]">
       <div className="flex flex-col gap-8 lg:gap-[50px]">
         <div className="flex flex-col gap-5 lg:gap-10">
           <p className="flex items-center gap-2.5 text-base leading-[37px] font-medium tracking-[0.32px] text-accent uppercase">
@@ -28,21 +29,22 @@ export function HeroSection() {
         <ArrowLink href="/menu">Explore menu</ArrowLink>
       </div>
 
-      <div className="relative">
-        {/* @container — блок с фото становится «контейнером», от ширины которого считается пар */}
-        <div className="@container relative aspect-[646/842] max-h-[560px] w-full overflow-hidden rounded-xl sm:max-h-[700px] lg:max-h-none">
-          <Image
-            src="/images/home/hero.jpg"
-            alt="Latte with heart latte art and a coffee cup in morning light"
-            fill
-            priority
-            sizes="(min-width: 1024px) 646px, 100vw"
-            className="object-cover object-bottom"
-          />
-          <Steam />
+      {/* На планшете ограничиваем ширину, чтобы видео не было огромным */}
+      {/* На компьютере блок с видео — во всю высоту экрана (h-svh), но не ниже 640px */}
+      <div className="relative w-full sm:mx-auto sm:max-w-[560px] lg:mx-0 lg:h-svh lg:min-h-[640px] lg:max-w-none">
+        {/*
+          Видео с паром. На телефоне и планшете блок имеет пропорции 4:5,
+          на компьютере — во всю высоту экрана. object-cover растягивает видео так,
+          чтобы закрыть блок целиком; лишнее сверху и снизу обрезается, чашка остаётся в центре.
+          У края экрана углы прямые, слева — скруглённые.
+        */}
+        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-xl lg:aspect-auto lg:h-full lg:rounded-r-none">
+          <HeroVideo className="absolute inset-0 size-full object-cover" />
         </div>
-        {/* Значок ровно наполовину на фото, наполовину на фоне (178 / 2 = 89px) */}
-        <CoffeeBadge className="absolute -bottom-10 left-4 scale-75 sm:scale-100 lg:bottom-14 lg:-left-[89px]" />
+        {/* Телефон и планшет: значок внутри фото, 20px от левого и нижнего края.
+            origin-bottom-left — уменьшаем значок от левого нижнего угла, чтобы отступы остались ровно 20px.
+            Компьютер: значок ровно наполовину на фото, наполовину на фоне (178 / 2 = 89px). */}
+        <CoffeeBadge className="absolute bottom-5 left-5 origin-bottom-left scale-75 sm:scale-100 lg:bottom-14 lg:-left-[89px] lg:origin-center" />
       </div>
     </section>
   );

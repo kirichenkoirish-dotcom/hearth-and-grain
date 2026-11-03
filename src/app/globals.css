@@ -22,24 +22,18 @@
   --animate-spin-slow: spin 18s linear infinite;
   --animate-spin-slow-reverse: spin 24s linear infinite reverse;
 
-  /* Пар над чашкой: струйка поднимается, расширяется, слегка уходит вбок и тает */
-  --animate-steam: steam 7s ease-in infinite;
+  /* Значок корзины «подпрыгивает», когда меняется число блюд */
+  --animate-bump: bump 400ms ease-out;
 
-  @keyframes steam {
+  @keyframes bump {
     0% {
-      opacity: 0;
-      transform: translate(0, 15%) scale(0.6, 0.5);
+      scale: 0.6;
     }
-    25% {
-      opacity: 1;
-    }
-    60% {
-      opacity: 0.65;
-      transform: translate(8%, -25%) scale(1, 1);
+    50% {
+      scale: 1.25;
     }
     100% {
-      opacity: 0;
-      transform: translate(-6%, -55%) scale(1.3, 1.2);
+      scale: 1;
     }
   }
 
@@ -116,11 +110,10 @@
   }
 }
 
-/* Если человек отключил анимации в системе, значок не крутится, а пар не движется */
+/* Если человек отключил анимации в системе, значок не крутится */
 @media (prefers-reduced-motion: reduce) {
   .animate-spin-slow,
-  .animate-spin-slow-reverse,
-  .animate-steam {
+  .animate-spin-slow-reverse {
     animation: none;
   }
 }
