@@ -18,7 +18,17 @@ export const DELIVERY = {
   feeGrosze: 1000,
   // Минимум считается только по сумме блюд, без цены доставки
   minimumOrderGrosze: 4000,
+  // Зона доставки — список почтовых индексов.
+  // ⚠️ ТЕСТОВЫЕ индексы: настоящий список пришлёт хозяйка кафе.
+  postalCodes: ["00-001", "00-950", "02-495", "03-984"],
 } as const;
+
+// Польский почтовый индекс: две цифры, дефис, три цифры (00-950)
+export const POSTAL_CODE_PATTERN = /^\d{2}-\d{3}$/;
+
+export function isInDeliveryZone(postalCode: string) {
+  return (DELIVERY.postalCodes as readonly string[]).includes(postalCode);
+}
 
 // Сколько штук одного блюда можно положить в корзину
 export const MAX_QUANTITY_PER_DISH = 20;
