@@ -5,6 +5,8 @@ import { Suspense } from "react";
 import { signOut } from "@/app/login/actions";
 import { AddressBook } from "@/components/account/address-book";
 import { ProfileForm } from "@/components/account/profile-form";
+import { ArrowLink } from "@/components/arrow-link";
+import { DishCard } from "@/components/dish-card";
 import { PageHero } from "@/components/page-hero";
 import { createServerSupabase } from "@/lib/supabase/server";
 
@@ -45,11 +47,17 @@ async function AccountContent() {
   // Не вошёл — отправляем на страницу входа
   if (!user) redirect("/login");
 
-  // Профиль и адреса читаем одновременно. RLS сам вернёт только данные этого человека.
-  const [{ data: profile }, { data: addresses }] = await Promise.all([
+  // Профиль, адреса и избранное читаем одновременно. RLS сам вернёт только данные этого человека.
+  const [{ data: profile }, { data: addresses }, { data: favorites }] = await Promise.all([
     supabase.from("profiles").select("full_name, phone").eq("id", user.id).single(),
     supabase.from("addresses").select("*").order("created_at"),
+    supabase
+      .from("favorites")
+      .select("dishes (id, name, slug, description, price_grosze, image_url, is_available)")
+      .order("created_at", { ascending: false }),
   ]);
+  // Блюдо могли удалить из меню — тогда dishes будет пустым, пропускаем такие строки
+  const favoriteDishes = (favorites ?? []).flatMap((row) => (row.dishes ? [row.dishes] : []));
 
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start">
@@ -60,6 +68,23 @@ async function AccountContent() {
 
         <AccountCard title="Saved addresses" glowAngle="225deg">
           <AddressBook addresses={addresses ?? []} />
+        </AccountCard>
+
+        <AccountCard title="Favourites" glowAngle="135deg">
+          {favoriteDishes.length === 0 ? (
+            <div className="flex flex-col items-start gap-5">
+              <p className="text-lg font-medium text-black/60">
+                Tap the ♡ on any dish to keep it here for next time.
+              </p>
+              <ArrowLink href="/menu">Explore menu</ArrowLink>
+            </div>
+          ) : (
+            <div className="grid gap-2 sm:grid-cols-2">
+              {favoriteDishes.map((dish) => (
+                <DishCard key={dish.id} dish={dish} />
+              ))}
+            </div>
+          )}
         </AccountCard>
       </div>
 
@@ -72,7 +97,7 @@ async function AccountContent() {
           {profile?.full_name && <p className="text-base font-medium break-all text-black/60">{user.email}</p>}
         </div>
         <p className="rounded-lg bg-bark/5 p-4 text-base leading-[1.4] font-medium text-black/70">
-          Your order history and favourite dishes will appear here soon.
+          Your order history will appear here soon.
         </p>
         <form action={signOut}>
           <button

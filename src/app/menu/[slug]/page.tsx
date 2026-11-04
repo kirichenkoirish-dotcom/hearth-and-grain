@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { AddToCartButton } from "@/components/add-to-cart-button";
 import { DishCard } from "@/components/dish-card";
+import { FavoriteButton } from "@/components/favorite-button";
 import { formatPrice } from "@/lib/format";
 import { getDishBySlug, getMenu } from "@/lib/menu";
 
@@ -99,6 +100,7 @@ async function DishContent({ params }: { params: PageProps<"/menu/[slug]">["para
               {formatPrice(dish.price_grosze)}
             </p>
             <AddToCartButton dishId={dish.id} dishName={dish.name} isAvailable={dish.is_available} />
+            <FavoriteButton dishId={dish.id} dishName={dish.name} variant="inline" />
           </div>
 
           <Link

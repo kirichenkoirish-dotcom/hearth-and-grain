@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AddToCartButton } from "@/components/add-to-cart-button";
+import { FavoriteButton } from "@/components/favorite-button";
 import { formatPrice } from "@/lib/format";
 import type { Dish } from "@/lib/menu";
 
@@ -11,7 +12,11 @@ import type { Dish } from "@/lib/menu";
 
 export function DishCard({ dish }: { dish: Dish }) {
   return (
-    <article className="group flex flex-col gap-[30px] rounded-xl border border-bark/50 bg-cream p-5">
+    <article className="group relative flex flex-col gap-[30px] rounded-xl border border-bark/50 bg-cream p-5">
+      {/* Сердечко лежит поверх фото, но вне ссылки: нажатие на него не открывает страницу блюда */}
+      <div className="absolute top-8 right-8 z-10">
+        <FavoriteButton dishId={dish.id} dishName={dish.name} />
+      </div>
       <Link
         href={`/menu/${dish.slug}`}
         className="relative block aspect-[395/296] overflow-hidden rounded-xl border border-bark/50"
