@@ -18,7 +18,7 @@ export type Slot = {
 const MINUTE = 60_000;
 
 // Какие год, месяц, день, час, минута и день недели сейчас в Варшаве для этого момента
-function warsawParts(date: Date) {
+export function warsawParts(date: Date) {
   const parts = new Intl.DateTimeFormat("en-GB", {
     timeZone: CAFE.timeZone,
     year: "numeric",

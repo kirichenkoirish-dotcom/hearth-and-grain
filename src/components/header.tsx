@@ -12,6 +12,7 @@ import { useCartCount } from "@/lib/cart-store";
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/menu", label: "Menu" },
+  { href: "/about", label: "About" },
   { href: "/contacts", label: "Contact" },
 ];
 

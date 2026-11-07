@@ -63,6 +63,16 @@ export function formatHour(time: string) {
 // Столики для заказа «за столиком» (номера 1…10, на каждом — QR-код)
 export const TABLE_COUNT = 10;
 
+// Бронь столика для компаний (форма на главной)
+export const BOOKING = {
+  minSeats: 5,
+  maxSeats: 30,
+  // Насколько вперёд можно оставить заявку
+  maxDaysAhead: 30,
+  // Последнее время брони — за час до закрытия
+  lastBookingBeforeCloseMinutes: 60,
+} as const;
+
 // Время выбирается слотами
 export const SLOTS = {
   lengthMinutes: 30,

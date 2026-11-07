@@ -6,6 +6,7 @@ import { SOCIAL } from "@/config/cafe";
 const navigationLinks = [
   { href: "/", label: "Home" },
   { href: "/menu", label: "Menu" },
+  { href: "/about", label: "About" },
   { href: "/contacts", label: "Contact" },
   { href: "/#reservation", label: "Reservation" },
 ];
