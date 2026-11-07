@@ -10,7 +10,14 @@ import { createOrder, type CheckoutState } from "@/app/checkout/actions";
 import type { Address } from "@/components/account/address-book";
 import { FormField, inputClass } from "@/components/account/form-field";
 import { ArrowLink } from "@/components/arrow-link";
-import { DELIVERY, TABLE_COUNT, isInDeliveryZone, POSTAL_CODE_PATTERN, type OrderType } from "@/config/cafe";
+import {
+  DELIVERY,
+  IS_PORTFOLIO_MODE,
+  POSTAL_CODE_PATTERN,
+  TABLE_COUNT,
+  isInDeliveryZone,
+  type OrderType,
+} from "@/config/cafe";
 import { useCartHydrated, useCartStore } from "@/lib/cart-store";
 import { formatPrice } from "@/lib/format";
 import type { Dish } from "@/lib/menu";
@@ -365,6 +372,13 @@ function CheckoutFormContent({ dishes, slots, canOrderAtTable, contact, savedAdd
       >
         <h2 className="font-display text-2xl leading-[1.2] font-medium tracking-[-0.24px]">Your order</h2>
 
+        {IS_PORTFOLIO_MODE && (
+          <p className="rounded-lg bg-bark/10 p-4 text-sm leading-[1.4] font-medium text-bark">
+            <span className="font-semibold">Demo site.</span> This is a portfolio project — no real
+            order is placed and no payment is taken.
+          </p>
+        )}
+
         <ul className="flex flex-col gap-2 text-base font-medium">
           {lines.map(({ dish, quantity }) => (
             <li key={dish.id} className="flex justify-between gap-4">
@@ -411,7 +425,11 @@ function CheckoutFormContent({ dishes, slots, canOrderAtTable, contact, savedAdd
           disabled={isSubmitting || belowMinimum || dineInClosed}
           className="btn-roast font-display rounded-full px-[30px] py-[15px] text-base leading-none font-medium tracking-[0.32px]"
         >
-          {isSubmitting ? "Opening secure payment…" : `Pay ${formatPrice(subtotal + deliveryFee)}`}
+          {isSubmitting
+            ? IS_PORTFOLIO_MODE
+              ? "Placing your order…"
+              : "Opening secure payment…"
+            : `Pay ${formatPrice(subtotal + deliveryFee)}`}
         </button>
         <Link href="/cart" className="self-center text-base font-medium text-black/60 hover:text-black">
           ← Back to cart

@@ -7,6 +7,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import {
   DELIVERY,
+  IS_PORTFOLIO_MODE,
   MAX_QUANTITY_PER_DISH,
   POSTAL_CODE_PATTERN,
   TABLE_COUNT,
@@ -134,6 +135,9 @@ export async function createOrder(_previous: CheckoutState, formData: FormData):
     return { error: "The minimum order for delivery is 40.00 zł. Add a little more, or choose pickup." };
   }
   const deliveryFee = orderType === "delivery" ? DELIVERY.feeGrosze : 0;
+
+  // Режим портфолио: всё проверили как по-настоящему, но заказ не сохраняем и оплату не берём
+  if (IS_PORTFOLIO_MODE) redirect("/demo-complete");
 
   // Если человек вошёл — привязываем заказ к нему, чтобы он появился в истории
   const supabase = await createServerSupabase();

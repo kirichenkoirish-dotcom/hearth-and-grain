@@ -13,6 +13,16 @@ export const CAFE = {
   timeZone: "Europe/Warsaw",
 } as const;
 
+// Соцсети автора сайта
+export const SOCIAL = {
+  instagram: "https://www.instagram.com/ivelensi_school",
+} as const;
+
+// Режим портфолио: сайт работает как настоящий, но заказ не сохраняется и оплаты нет —
+// после «Pay» гость видит страницу «это портфолио-проект». Включается в настройках Vercel:
+// NEXT_PUBLIC_PORTFOLIO_MODE=true. На своём компьютере (без этой настройки) работает настоящая оплата Stripe.
+export const IS_PORTFOLIO_MODE = process.env.NEXT_PUBLIC_PORTFOLIO_MODE === "true";
+
 // Доставка. Деньги — в грошах: 1000 = 10 zł
 export const DELIVERY = {
   feeGrosze: 1000,

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { NewsletterForm } from "@/components/newsletter-form";
+import { SOCIAL } from "@/config/cafe";
 
 const navigationLinks = [
   { href: "/", label: "Home" },
@@ -45,10 +46,9 @@ export function Footer() {
   );
 }
 
+// Пока у автора есть только Instagram. Появятся Behance или YouTube — добавим их адреса в SOCIAL
 const socialLinks = [
-  { href: "https://www.instagram.com/", label: "Instagram", icon: "/images/icons/instagram.svg" },
-  { href: "https://www.behance.net/", label: "Behance", icon: "/images/icons/behance.svg" },
-  { href: "https://www.youtube.com/", label: "YouTube", icon: "/images/icons/youtube.svg" },
+  { href: SOCIAL.instagram, label: "Instagram", icon: "/images/icons/instagram.svg" },
 ];
 
 function SocialLinks() {
