@@ -46,3 +46,19 @@ export function formatHour(time: string) {
   const displayHours = hours % 12 === 0 ? 12 : hours % 12;
   return `${displayHours}:${String(minutes).padStart(2, "0")} ${period}`;
 }
+
+// Столики для заказа «за столиком» (номера 1…10, на каждом — QR-код)
+export const TABLE_COUNT = 10;
+
+// Время выбирается слотами
+export const SLOTS = {
+  lengthMinutes: 30,
+  // Последний слот — за 30 минут до закрытия
+  lastSlotBeforeCloseMinutes: 30,
+  // Насколько вперёд можно заказать
+  maxDaysAhead: 7,
+  // Минимальное время на подготовку до ближайшего слота
+  prepMinutes: { pickup: 20, dine_in: 20, delivery: 45 },
+} as const;
+
+export type OrderType = "delivery" | "pickup" | "dine_in";

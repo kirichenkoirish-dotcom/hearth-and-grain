@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Glass ribbon demo</title>
+<style>
+  body{margin:0;min-height:100vh;display:grid;place-items:center;background:#f6f5f3;overflow:hidden;font-family:system-ui}
+  .stage{perspective:1400px;width:min(92vw,1100px)}
+  .tilt{transition:transform .6s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d}
+  .ribbon{position:relative;aspect-ratio:1585/992;animation:float 9s ease-in-out infinite}
+  .ribbon img{position:absolute;inset:0;width:100%;height:100%;display:block}
+  /* warm glow under the edges, slowly breathing */
+  .glow{filter:blur(14px) saturate(1.6);opacity:.25;animation:breathe 6s ease-in-out infinite}
+  /* light sweep, visible only where the ribbon is */
+  .sweep{position:absolute;inset:0;
+    -webkit-mask:url(ribbon.png) center/100% 100% no-repeat;mask:url(ribbon.png) center/100% 100% no-repeat;
+    background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.95) 48%,rgba(255,190,140,.7) 50%,rgba(255,255,255,.95) 52%,transparent 60%) 0 0/300% 100% no-repeat;
+    mix-blend-mode:screen;animation:sweep 5.5s cubic-bezier(.6,0,.3,1) infinite}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-14px) rotate(-1.2deg)}}
+  @keyframes breathe{0%,100%{opacity:.15}50%{opacity:.4}}
+  @keyframes sweep{0%{background-position:100% 0}60%,100%{background-position:0% 0}}
+  @media (prefers-reduced-motion:reduce){.ribbon,.glow,.sweep{animation:none}.sweep{opacity:0}}
+</style></head>
+<body>
+<div class="stage"><div class="tilt" id="tilt"><div class="ribbon">
+  <img class="glow" src="ribbon.png" alt="">
+  <img src="ribbon.png" alt="">
+  <div class="sweep"></div>
+</div></div></div>
+<script>
+  const t=document.getElementById('tilt');
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches)
+  addEventListener('pointermove',e=>{
+    const x=e.clientX/innerWidth-.5,y=e.clientY/innerHeight-.5;
+    t.style.transform=`rotateY(${x*10}deg) rotateX(${-y*8}deg)`;
+  });
+</script>
+</body></html>

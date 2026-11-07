@@ -16,6 +16,9 @@ export type CartItem = { dishId: number; quantity: number };
 
 type CartState = {
   items: CartItem[];
+  // Номер столика, если гость открыл сайт по QR-коду на столе (этап 6.3)
+  tableNumber: number | null;
+  setTableNumber: (tableNumber: number | null) => void;
   addDish: (dishId: number) => void;
   setQuantity: (dishId: number, quantity: number) => void;
   removeDish: (dishId: number) => void;
@@ -26,6 +29,8 @@ export const useCartStore = create<CartState>()(
   persist(
     (set) => ({
       items: [],
+      tableNumber: null,
+      setTableNumber: (tableNumber) => set({ tableNumber }),
 
       addDish: (dishId) =>
         set((state) => {
