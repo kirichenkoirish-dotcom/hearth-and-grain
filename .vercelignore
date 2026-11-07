@@ -7,3 +7,9 @@
 # Служебные файлы Supabase CLI и Claude
 supabase/.temp
 .claude
+
+# Большие папки, которые Vercel создаёт сам при сборке — отправлять их не нужно
+node_modules
+.next
+.git
+.vercel
