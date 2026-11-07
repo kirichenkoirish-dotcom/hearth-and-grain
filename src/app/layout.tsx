@@ -3,7 +3,8 @@ import { Instrument_Sans, Playfair_Display, Work_Sans } from "next/font/google";
 import { CartHydrator } from "@/components/cart-hydrator";
 import { FavoritesLoader } from "@/components/favorites-loader";
 import { Footer } from "@/components/footer";
-import { Header } from "@/components/header";
+import { Header, HeaderFallback } from "@/components/header";
+import { Suspense } from "react";
 import "./globals.css";
 
 // Шрифты скачиваются при сборке и отдаются с нашего сайта, без запросов к Google
@@ -42,7 +43,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="flex min-h-full flex-col font-sans">
         <CartHydrator />
         <FavoritesLoader />
-        <Header />
+        <Suspense fallback={<HeaderFallback />}>
+          <Header />
+        </Suspense>
         <main className="flex-1">{children}</main>
         <Footer />
       </body>

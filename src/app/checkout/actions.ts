@@ -3,6 +3,8 @@
 // Оформление заказа. Сервер НИЧЕМУ из браузера не доверяет:
 // цены берёт из базы, сам считает сумму, проверяет зону доставки, минимум и время.
 
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import {
   DELIVERY,
   MAX_QUANTITY_PER_DISH,
@@ -12,13 +14,13 @@ import {
   type OrderType,
 } from "@/config/cafe";
 import { canOrderAtTableNow, getAvailableSlots } from "@/lib/slots";
+import { getStripe } from "@/lib/stripe";
 import { createAdminSupabase } from "@/lib/supabase/admin";
 import { createServerSupabase } from "@/lib/supabase/server";
 
 export type CheckoutState = {
   error?: string;
   fieldErrors?: Record<string, string>;
-  orderId?: string;
 };
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -175,6 +177,55 @@ export async function createOrder(_previous: CheckoutState, formData: FormData):
     return { error: "We couldn’t save your order. Please try again." };
   }
 
-  // Здесь на этапе 6.2 появится переход на страницу оплаты Stripe
-  return { orderId: order.id };
+  // Страница оплаты Stripe. Цены передаём те, что посчитал сервер.
+  const headerList = await headers();
+  const origin = headerList.get("origin") ?? `https://${headerList.get("host")}`;
+
+  let paymentUrl: string | null = null;
+  try {
+    const session = await getStripe().checkout.sessions.create({
+      mode: "payment",
+      currency: "pln",
+      locale: "en",
+      customer_email: email,
+      client_reference_id: order.id,
+      metadata: { order_id: order.id },
+      line_items: [
+        ...lines.map((line) => ({
+          quantity: line.quantity,
+          price_data: {
+            currency: "pln",
+            unit_amount: line.dish!.price_grosze,
+            product_data: { name: line.dish!.name },
+          },
+        })),
+        ...(deliveryFee > 0
+          ? [
+              {
+                quantity: 1,
+                price_data: { currency: "pln", unit_amount: deliveryFee, product_data: { name: "Delivery" } },
+              },
+            ]
+          : []),
+      ],
+      // Ссылка на оплату действует 30 минут — потом заказ можно оформить заново
+      expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
+      // {CHECKOUT_SESSION_ID} Stripe сам заменит на номер оплаты
+      success_url: `${origin}/order/${order.id}?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/checkout?canceled=1`,
+    });
+
+    await admin.from("orders").update({ stripe_checkout_session_id: session.id }).eq("id", order.id);
+    paymentUrl = session.url;
+  } catch {
+    paymentUrl = null;
+  }
+
+  if (!paymentUrl) {
+    await admin.from("orders").update({ status: "cancelled" }).eq("id", order.id);
+    return { error: "We couldn’t open the payment page. Please try again in a moment." };
+  }
+
+  // Переход на страницу оплаты Stripe (redirect работает только вне try/catch)
+  redirect(paymentUrl);
 }

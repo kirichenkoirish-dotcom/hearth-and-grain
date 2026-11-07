@@ -69,20 +69,6 @@ function CheckoutFormContent({ dishes, slots, canOrderAtTable, contact, savedAdd
     return dish && dish.is_available ? [{ dish, quantity: item.quantity }] : [];
   });
 
-  if (state.orderId) {
-    return (
-      <div role="status" className="border-glow mx-auto flex max-w-[720px] flex-col gap-4 rounded-xl p-8 md:p-12">
-        <h2 className="font-display text-[28px] leading-[1.2] font-medium text-accent md:text-4xl">
-          Your order is saved
-        </h2>
-        <p className="text-lg font-medium text-black/70">
-          Order number <span className="font-display text-black">{state.orderId.slice(0, 8).toUpperCase()}</span>.
-          Online payment with Stripe is coming in the next step.
-        </p>
-      </div>
-    );
-  }
-
   if (lines.length === 0) {
     return (
       <div className="border-glow mx-auto flex max-w-[720px] flex-col items-start gap-6 rounded-xl p-8 md:p-12">
@@ -425,7 +411,7 @@ function CheckoutFormContent({ dishes, slots, canOrderAtTable, contact, savedAdd
           disabled={isSubmitting || belowMinimum || dineInClosed}
           className="btn-roast font-display rounded-full px-[30px] py-[15px] text-base leading-none font-medium tracking-[0.32px]"
         >
-          {isSubmitting ? "Placing your order…" : `Pay ${formatPrice(subtotal + deliveryFee)}`}
+          {isSubmitting ? "Opening secure payment…" : `Pay ${formatPrice(subtotal + deliveryFee)}`}
         </button>
         <Link href="/cart" className="self-center text-base font-medium text-black/60 hover:text-black">
           ← Back to cart

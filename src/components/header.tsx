@@ -21,7 +21,16 @@ function isActiveLink(pathname: string, href: string) {
 }
 
 export function Header() {
-  const pathname = usePathname();
+  return <HeaderView pathname={usePathname()} />;
+}
+
+// Шапка без знания адреса страницы — показывается, пока адрес ещё неизвестен
+// (например, у страницы заказа, адрес которой Next.js не может знать заранее).
+export function HeaderFallback() {
+  return <HeaderView pathname="" />;
+}
+
+function HeaderView({ pathname }: { pathname: string }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const cartCount = useCartCount();
   const closeMenu = () => setIsMenuOpen(false);
