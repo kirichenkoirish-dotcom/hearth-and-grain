@@ -46,6 +46,27 @@ export async function sendMagicLink(_previous: LoginState, formData: FormData): 
   return { step: "sent", email };
 }
 
+// Вход по коду из письма. Supabase иногда присылает не ссылку, а код (6 цифр) —
+// тогда человек вводит его на экране «Check your email».
+export type CodeState = { error?: string };
+
+export async function verifyCode(_previous: CodeState, formData: FormData): Promise<CodeState> {
+  const email = String(formData.get("email") ?? "").trim().toLowerCase();
+  const code = String(formData.get("code") ?? "").replace(/\s/g, "");
+
+  if (!/^\d{6,8}$/.test(code)) {
+    return { error: "Please enter the code from the email — only digits." };
+  }
+
+  const supabase = await createServerSupabase();
+  const { error } = await supabase.auth.verifyOtp({ email, token: code, type: "email" });
+  if (error) {
+    return { error: "This code is wrong or has expired. Check the latest email, or send a new one." };
+  }
+
+  redirect("/account");
+}
+
 export async function signOut() {
   const supabase = await createServerSupabase();
   await supabase.auth.signOut();

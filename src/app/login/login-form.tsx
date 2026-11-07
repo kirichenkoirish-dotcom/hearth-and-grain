@@ -3,7 +3,7 @@
 // "use client" — форма меняется на глазах: сначала поле почты, потом «Check your email».
 
 import { useActionState, useState } from "react";
-import { sendMagicLink, type LoginState } from "./actions";
+import { sendMagicLink, verifyCode, type CodeState, type LoginState } from "./actions";
 
 const inputClass =
   "h-[50px] w-full rounded-lg border border-black/20 bg-transparent px-[13px] text-lg font-medium text-black placeholder:text-black/50 focus:border-bark focus:outline-none";
@@ -39,7 +39,7 @@ function EmailFlow({ linkError, onReset }: { linkError: boolean; onReset: () => 
         Sign in or create an account
       </h2>
       <p className="text-lg leading-[1.4] font-medium text-black/60">
-        No password needed. We’ll email you a link — just tap it to sign in.
+        No password needed. We’ll email you a sign-in link or a code.
       </p>
 
       <div className="flex flex-col gap-2">
@@ -84,9 +84,11 @@ function CheckEmail({ email, onReset }: { email: string; onReset: () => void }) 
         Check your email
       </h2>
       <p className="text-lg leading-[1.4] font-medium text-black/70">
-        We sent a sign-in link to <span className="break-all text-black">{email}</span>. Tap it to
-        sign in.
+        We sent an email to <span className="break-all text-black">{email}</span>. Tap the link in
+        it — or, if the email has a code, type it below.
       </p>
+
+      <CodeForm email={email} />
 
       <ul className="flex flex-col gap-3 rounded-lg bg-bark/5 p-5 text-base leading-[1.4] font-medium text-black/70">
         <li>
@@ -94,11 +96,11 @@ function CheckEmail({ email, onReset }: { email: string; onReset: () => void }) 
           the email comes from Supabase, our sign-in service.
         </li>
         <li>
-          <span className="text-black">Open the link in this browser.</span> If you open it on
-          another device or browser, you’ll be signed in there instead.
+          <span className="text-black">Using a link?</span> Open it in this browser. If you open it on
+          another device, you’ll be signed in there instead — the code works anywhere.
         </li>
         <li>
-          <span className="text-black">The link works once</span> and expires in an hour.
+          <span className="text-black">The link and the code work once</span> and expire in an hour.
         </li>
       </ul>
 
@@ -110,5 +112,43 @@ function CheckEmail({ email, onReset }: { email: string; onReset: () => void }) 
         Use a different email or send again
       </button>
     </div>
+  );
+}
+
+function CodeForm({ email }: { email: string }) {
+  const [state, action, isChecking] = useActionState<CodeState, FormData>(verifyCode, {});
+
+  return (
+    <form action={action} className="flex flex-col gap-3">
+      <input type="hidden" name="email" value={email} />
+      <label htmlFor="login-code" className="font-display pl-2.5 text-xl font-medium text-black/80">
+        Code from the email
+      </label>
+      <div className="flex flex-col gap-3 sm:flex-row">
+        <input
+          id="login-code"
+          name="code"
+          inputMode="numeric"
+          autoComplete="one-time-code"
+          required
+          placeholder="123456"
+          aria-describedby={state.error ? "code-error" : undefined}
+          aria-invalid={Boolean(state.error)}
+          className={`${inputClass} tracking-[6px] sm:flex-1`}
+        />
+        <button
+          type="submit"
+          disabled={isChecking}
+          className="btn-roast font-display rounded-full px-[30px] py-[15px] text-base leading-none font-medium tracking-[0.32px]"
+        >
+          {isChecking ? "Checking…" : "Sign in"}
+        </button>
+      </div>
+      {state.error && (
+        <p id="code-error" role="alert" className="text-base font-medium text-accent">
+          {state.error}
+        </p>
+      )}
+    </form>
   );
 }
