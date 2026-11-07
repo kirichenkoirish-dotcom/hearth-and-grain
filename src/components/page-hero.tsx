@@ -7,6 +7,7 @@ export function PageHero({
   imageAlt,
   imagePosition = "object-[25%_center] md:object-[30%_center]",
   textWidth = "max-w-[563px]",
+  fadeOnDesktop = false,
   eyebrow,
   title,
   children,
@@ -17,6 +18,8 @@ export function PageHero({
   imagePosition?: string;
   // Ширина подзаголовка — уже, если справа на фото близко что-то важное
   textWidth?: string;
+  // Светлая дымка слева и на компьютере — если заголовок заходит на тёмную часть фото
+  fadeOnDesktop?: boolean;
   eyebrow: string;
   title: string;
   children: React.ReactNode;
@@ -33,6 +36,9 @@ export function PageHero({
       />
       {/* На телефоне и планшете фото обрезается, поэтому слегка осветляем левую часть под текстом */}
       <div className="absolute inset-0 bg-linear-to-r from-cream/85 via-cream/50 to-transparent lg:hidden" />
+      {fadeOnDesktop && (
+        <div className="absolute inset-y-0 left-0 hidden w-[65%] bg-linear-to-r from-cream/90 via-cream/60 to-transparent lg:block" />
+      )}
 
       {/* На телефоне текст начинается сразу под шапкой (pt-32), на компьютере — как в макете (175px) */}
       <div className="relative mx-auto flex h-full max-w-[1440px] flex-col px-4 pt-32 md:px-10 md:pt-[175px]">

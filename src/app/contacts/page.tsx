@@ -25,6 +25,7 @@ export default function ContactsPage() {
         eyebrow="Get in touch"
         title="Contact us"
         textWidth="max-w-[360px]"
+        fadeOnDesktop
       >
         Have a question, a special request, or just want to say hello? We’d love to hear from you.
       </PageHero>
