@@ -13,9 +13,9 @@ export const CAFE = {
   timeZone: "Europe/Warsaw",
 } as const;
 
-// Соцсети автора сайта
+// Соцсети автора сайта (студия Senvori.Agency)
 export const SOCIAL = {
-  instagram: "https://www.instagram.com/ivelensi_school",
+  instagram: "https://www.instagram.com/senvori.agency/",
 } as const;
 
 // Режим портфолио: сайт работает как настоящий, но заказ не сохраняется и оплаты нет —
