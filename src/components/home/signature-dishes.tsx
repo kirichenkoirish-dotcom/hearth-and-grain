@@ -106,8 +106,9 @@ export function SignatureDishes() {
                     sizes="330px"
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  {/* Градиент снизу и название — одинаковые на всех фото */}
-                  <span className="absolute inset-x-0 bottom-0 flex h-1/3 items-end justify-center bg-linear-to-t from-black/55 to-transparent px-5 pb-7">
+                  {/* Название вверху карточки, 60px от края, с затемнением сверху (просьба пользователя):
+                      внизу и так блюдо — так карточка уравновешена */}
+                  <span className="absolute inset-x-0 top-0 flex h-1/3 items-start justify-center bg-linear-to-b from-black/55 to-transparent px-5 pt-[60px]">
                     <span className="font-display text-center text-[22px] leading-[1.2] font-medium tracking-[-0.24px] text-white">
                       {dish.name}
                     </span>
