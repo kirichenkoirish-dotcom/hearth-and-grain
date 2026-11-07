@@ -16,6 +16,9 @@ export const CAFE = {
 // Соцсети автора сайта (студия Senvori.Agency)
 export const SOCIAL = {
   instagram: "https://www.instagram.com/senvori.agency/",
+  youtube: "https://www.youtube.com/@IVELENSI_school/videos",
+  // Telegram: @Iryna_webdesigner
+  telegram: "https://t.me/Iryna_webdesigner",
 } as const;
 
 // Режим портфолио: сайт работает как настоящий, но заказ не сохраняется и оплаты нет —

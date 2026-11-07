@@ -39,16 +39,28 @@ export function Footer() {
       <div className="border-t border-cream/60">
         <div className="mx-auto flex max-w-[1440px] flex-col gap-2 px-4 py-8 text-base text-cream/60 md:flex-row md:justify-between md:px-10 md:text-lg">
           <p>Copyrights are reserved @ Hearth &amp; Grain</p>
-          <p>Designed by Senvori.Agency</p>
+          <p>
+            Designed by{" "}
+            <a
+              href={SOCIAL.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline-offset-4 transition-colors hover:text-cream hover:underline"
+            >
+              Senvori.Agency
+            </a>
+          </p>
         </div>
       </div>
     </footer>
   );
 }
 
-// Пока у автора есть только Instagram. Появятся Behance или YouTube — добавим их адреса в SOCIAL
+// Соцсети автора — адреса в SOCIAL (config/cafe.ts)
 const socialLinks = [
   { href: SOCIAL.instagram, label: "Instagram", icon: "/images/icons/instagram.svg" },
+  { href: SOCIAL.youtube, label: "YouTube", icon: "/images/icons/youtube.svg" },
+  { href: SOCIAL.telegram, label: "Telegram", icon: "/images/icons/telegram.svg" },
 ];
 
 function SocialLinks() {
