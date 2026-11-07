@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { connection } from "next/server";
 import { Suspense } from "react";
@@ -58,7 +59,7 @@ async function AccountContent() {
       .not("paid_at", "is", null)
       .order("created_at", { ascending: false })
       .limit(20),
-    supabase.from("profiles").select("full_name, phone").eq("id", user.id).single(),
+    supabase.from("profiles").select("full_name, phone, role").eq("id", user.id).single(),
     supabase.from("addresses").select("*").order("created_at"),
     supabase
       .from("favorites")
@@ -109,6 +110,14 @@ async function AccountContent() {
           </p>
           {profile?.full_name && <p className="text-base font-medium break-all text-black/60">{user.email}</p>}
         </div>
+        {profile?.role === "admin" && (
+          <Link
+            href="/admin"
+            className="btn-roast font-display rounded-full px-[30px] py-3 text-center text-base font-medium"
+          >
+            Admin panel
+          </Link>
+        )}
         <form action={signOut}>
           <button
             type="submit"
