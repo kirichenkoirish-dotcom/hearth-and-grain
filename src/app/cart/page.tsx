@@ -3,7 +3,8 @@ import { CartView } from "@/components/cart/cart-view";
 import { PageHero } from "@/components/page-hero";
 import { getMenu } from "@/lib/menu";
 
-export const metadata: Metadata = { title: "My order" };
+// Личная или служебная страница — поисковикам показывать не нужно
+export const metadata: Metadata = { title: "My order", robots: { index: false } };
 
 // Сама корзина живёт в браузере, а цены и фото берём из меню на сервере —
 // так они всегда актуальные. Сервер передаёт в браузер список блюд, а CartView

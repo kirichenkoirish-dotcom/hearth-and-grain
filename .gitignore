@@ -25,3 +25,7 @@ next-env.d.ts
 npm-debug.log*
 .DS_Store
 *.pem
+
+# Личные заметки по проекту и настройки Claude — остаются только на компьютере, на GitHub не попадают
+/CLAUDE.md
+/.claude/

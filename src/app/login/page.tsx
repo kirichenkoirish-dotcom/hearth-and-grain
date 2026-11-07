@@ -3,7 +3,8 @@ import { Suspense } from "react";
 import { PageHero } from "@/components/page-hero";
 import { LoginForm } from "./login-form";
 
-export const metadata: Metadata = { title: "Sign in" };
+// Личная или служебная страница — поисковикам показывать не нужно
+export const metadata: Metadata = { title: "Sign in", robots: { index: false } };
 
 export default function LoginPage({ searchParams }: PageProps<"/login">) {
   return (

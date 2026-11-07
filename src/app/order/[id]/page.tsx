@@ -11,7 +11,8 @@ import { ORDER_TYPE_LABELS, formatOrderTime, shortOrderId } from "@/lib/order-st
 import { confirmOrderPayment } from "@/lib/stripe";
 import { createAdminSupabase } from "@/lib/supabase/admin";
 
-export const metadata: Metadata = { title: "Your order" };
+// Личная или служебная страница — поисковикам показывать не нужно
+export const metadata: Metadata = { title: "Your order", robots: { index: false } };
 
 // Страница заказа. Сюда Stripe возвращает гостя после оплаты.
 // Номер заказа — длинный случайный код (uuid), поэтому чужой заказ по ссылке не угадать.

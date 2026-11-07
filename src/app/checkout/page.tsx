@@ -7,7 +7,8 @@ import { getMenu } from "@/lib/menu";
 import { canOrderAtTableNow, getAvailableSlots } from "@/lib/slots";
 import { createServerSupabase } from "@/lib/supabase/server";
 
-export const metadata: Metadata = { title: "Checkout" };
+// Личная или служебная страница — поисковикам показывать не нужно
+export const metadata: Metadata = { title: "Checkout", robots: { index: false } };
 
 export default function CheckoutPage() {
   return (

@@ -7,6 +7,11 @@ import { CAFE, OPENING_HOURS, SOCIAL, formatHour } from "@/config/cafe";
 export const metadata: Metadata = {
   title: "Contact",
   description: `Visit Hearth & Grain at ${CAFE.address.street}, ${CAFE.address.city}. Opening hours, phone, email and a map.`,
+  openGraph: {
+    title: "Contact us · Hearth & Grain",
+    description: `${CAFE.address.street}, ${CAFE.address.city} — opening hours, phone, email and a map.`,
+    images: [{ url: "/images/contact/contact-hero.jpg", alt: "A latte, a notebook and daisies on a marble cafe table" }],
+  },
 };
 
 const fullAddress = `${CAFE.address.street}, ${CAFE.address.postalCode} ${CAFE.address.city}`;

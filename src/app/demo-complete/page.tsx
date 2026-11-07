@@ -4,7 +4,8 @@ import { ClearCart } from "@/components/checkout/clear-cart";
 import { PageHero } from "@/components/page-hero";
 import { SOCIAL } from "@/config/cafe";
 
-export const metadata: Metadata = { title: "Thank you for your order" };
+// Личная или служебная страница — поисковикам показывать не нужно
+export const metadata: Metadata = { title: "Thank you for your order", robots: { index: false } };
 
 // Сюда попадает гость после «Pay» в режиме портфолио: заказа и оплаты нет,
 // только спасибо, ссылка на Instagram автора и ссылка на главную.

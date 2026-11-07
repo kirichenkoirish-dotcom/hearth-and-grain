@@ -4,6 +4,7 @@ import { CartHydrator } from "@/components/cart-hydrator";
 import { FavoritesLoader } from "@/components/favorites-loader";
 import { Footer } from "@/components/footer";
 import { Header, HeaderFallback } from "@/components/header";
+import { SITE_URL } from "@/config/cafe";
 import { Suspense } from "react";
 import "./globals.css";
 
@@ -23,13 +24,27 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
 });
 
+const description =
+  "A small cafe in Warsaw’s Old Town with light-roast coffee, fresh pastries and all-day breakfast. Order online for delivery, pickup or at your table.";
+
+// Название и описание сайта для вкладки браузера, Google и превью ссылок в мессенджерах.
+// Картинка превью — src/app/opengraph-image.jpg, иконка — icon.png и apple-icon.png (Next.js находит их сам).
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Hearth & Grain",
+    default: "Hearth & Grain — cafe & bakery in Warsaw",
     template: "%s · Hearth & Grain",
   },
-  description:
-    "A small cafe with light-roast coffee, fresh pastries and all-day breakfast. Order online for delivery, pickup or at your table.",
+  description,
+  applicationName: "Hearth & Grain",
+  openGraph: {
+    type: "website",
+    siteName: "Hearth & Grain",
+    locale: "en_GB",
+    title: "Hearth & Grain — cafe & bakery in Warsaw",
+    description,
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

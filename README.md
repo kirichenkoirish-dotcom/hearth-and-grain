@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Hearth & Grain — cafe website with online ordering
 
-## Getting Started
+![Hearth & Grain](src/app/opengraph-image.jpg)
 
-First, run the development server:
+**Live demo: [hearth-and-grain-cafe.vercel.app](https://hearth-and-grain-cafe.vercel.app)**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+A website for a small cafe and bakery in Warsaw: menu, cart, ordering for delivery, pickup or at the table,
+online payment, customer accounts and an admin panel for the cafe staff.
+
+> This is a portfolio project. On the live demo no real order is placed and no payment is taken —
+> after “Pay” you see a demo page instead. The full payment flow works in Stripe test mode.
+
+Designed and built by [Senvori.Agency](https://www.instagram.com/senvori.agency/).
+
+## Features
+
+- **Menu** with categories, dish pages and “sold out” dishes
+- **Cart** that survives page reloads
+- **Checkout** with three order types:
+  - delivery — address check against the delivery zone (by postcode), 10 zł fee, 40 zł minimum
+  - pickup — 30-minute time slots
+  - at the table — table number
+- **Time slots** in Warsaw time: opening hours, preparation time, up to 7 days ahead, “as soon as possible”
+- **Online payment** with Stripe Checkout (card and BLIK, PLN), confirmed by a signed webhook
+- **Sign-in without a password** — a magic link or a one-time code by email
+- **Customer account**: profile, saved addresses, favourite dishes, order history and status
+- **Admin panel**: change order status, dish prices and availability
+- **Forms**: table booking for groups of 5+, contact form, newsletter sign-up
+- **Contact page** with a map
+- **Responsive** — designed mobile-first
+- **SEO basics**: page titles and descriptions, link previews, sitemap, robots.txt
+
+## Tech stack
+
+| | |
+|---|---|
+| Framework | [Next.js 16](https://nextjs.org) (App Router, Server Components, Server Actions) + TypeScript |
+| Styling | [Tailwind CSS 4](https://tailwindcss.com) |
+| Database & auth | [Supabase](https://supabase.com) — Postgres with Row Level Security, email sign-in |
+| Payments | [Stripe Checkout](https://stripe.com) (test mode) |
+| State | [Zustand](https://zustand.docs.pmnd.rs) (cart, favourites) |
+| Hosting | [Vercel](https://vercel.com) |
+
+## Security
+
+- Order totals are always calculated on the server from database prices — the browser’s numbers are never trusted.
+- An order is marked as paid only after Stripe confirms the payment.
+- Row Level Security in the database: customers see only their own data; only the admin can change dishes and order statuses.
+- Secret keys live only in environment variables, never in the repository.
+
+## Project structure
+
+```
+src/
+  app/              pages (menu, cart, checkout, account, admin, contacts…) and server actions
+  components/       UI components grouped by page
+  config/cafe.ts    cafe settings: address, opening hours, delivery fee, time slots
+  lib/              Supabase and Stripe clients, time slots, menu, formatting
+supabase/
+  migrations/       database tables and access rules (SQL)
+  seed.sql          demo menu
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Running locally
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+cp .env.example .env.local   # fill in your Supabase and Stripe test keys
+npm run dev                  # http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Test payment: card `4242 4242 4242 4242`, any future date and CVC; BLIK code `777123`.

@@ -15,6 +15,10 @@ export const CAFE = {
   timeZone: "Europe/Warsaw",
 } as const;
 
+// Адрес живого сайта — для превью ссылок, карты сайта и robots.txt.
+// Свободное имя на vercel.app (hearth-and-grain.vercel.app занято другим сайтом).
+export const SITE_URL = "https://hearth-and-grain-cafe.vercel.app";
+
 // Соцсети автора сайта (студия Senvori.Agency)
 export const SOCIAL = {
   instagram: "https://www.instagram.com/senvori.agency/",

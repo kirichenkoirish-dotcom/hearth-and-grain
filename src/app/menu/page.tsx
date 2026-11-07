@@ -8,6 +8,11 @@ export const metadata: Metadata = {
   title: "Our Menu",
   description:
     "Coffee, fresh pastries, all-day breakfast and something sweet. Order for delivery, pickup or at your table.",
+  openGraph: {
+    title: "Our Menu · Hearth & Grain",
+    description: "Coffee, fresh pastries, all-day breakfast and something sweet.",
+    images: [{ url: "/images/menu-hero.jpg", alt: "A latte and a dessert on a cafe table" }],
+  },
 };
 
 export default async function MenuPage() {

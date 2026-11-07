@@ -12,7 +12,8 @@ import { DishCard } from "@/components/dish-card";
 import { PageHero } from "@/components/page-hero";
 import { createServerSupabase } from "@/lib/supabase/server";
 
-export const metadata: Metadata = { title: "My account" };
+// Личная или служебная страница — поисковикам показывать не нужно
+export const metadata: Metadata = { title: "My account", robots: { index: false } };
 
 export default function AccountPage() {
   return (

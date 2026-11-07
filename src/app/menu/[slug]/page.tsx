@@ -21,9 +21,15 @@ export async function generateMetadata({ params }: PageProps<"/menu/[slug]">): P
   const result = await getDishBySlug(slug);
   if (!result) return { title: "Dish not found" };
 
+  // В превью ссылки на блюдо — фото этого блюда
   return {
     title: result.dish.name,
     description: result.dish.description,
+    openGraph: {
+      title: `${result.dish.name} · Hearth & Grain`,
+      description: result.dish.description ?? undefined,
+      images: result.dish.image_url ? [{ url: result.dish.image_url, alt: result.dish.name }] : undefined,
+    },
   };
 }
 
