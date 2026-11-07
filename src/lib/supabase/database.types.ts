@@ -107,6 +107,33 @@ export type Database = {
         }
         Relationships: []
       }
+      contact_messages: {
+        Row: {
+          created_at: string
+          email: string
+          id: number
+          is_read: boolean
+          message: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: never
+          is_read?: boolean
+          message: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: never
+          is_read?: boolean
+          message?: string
+          name?: string
+        }
+        Relationships: []
+      }
       dishes: {
         Row: {
           category_id: number

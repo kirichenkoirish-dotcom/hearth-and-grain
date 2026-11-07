@@ -1,6 +1,6 @@
 "use server";
 
-// Server Actions для двух открытых форм: бронь столика (главная) и подписка (подвал).
+// Server Actions для открытых форм: бронь столика (главная), подписка (подвал), сообщение (контакты).
 // Писать в эти таблицы может любой посетитель, а читает их только админ (правила RLS).
 // В режиме портфолио ничего не сохраняем: это демо, чужие телефоны и почты нам не нужны.
 
@@ -136,4 +136,29 @@ export async function subscribeToNewsletter(_previous: PublicFormState, formData
     return { error: "Sorry, something went wrong. Please try again.", values: { email } };
   }
   return { ok: true, message: "Thanks! You’re on the list." };
+}
+
+export async function sendContactMessage(_previous: PublicFormState, formData: FormData): Promise<PublicFormState> {
+  const values = {
+    name: text(formData, "name"),
+    email: text(formData, "email").toLowerCase(),
+    message: text(formData, "message"),
+  };
+  const fieldErrors: Record<string, string> = {};
+  if (values.name.length < 2 || values.name.length > 80) fieldErrors.name = "Enter your name.";
+  if (!EMAIL_PATTERN.test(values.email)) fieldErrors.email = "Enter a valid email.";
+  if (values.message.length < 5) fieldErrors.message = "Write a few words.";
+  if (values.message.length > 2000) fieldErrors.message = "Keep it under 2000 characters.";
+  if (Object.keys(fieldErrors).length > 0) return { fieldErrors, values };
+
+  if (IS_PORTFOLIO_MODE) {
+    return { ok: true, message: "Thank you! This is a demo site, so your message wasn’t sent — but this is where the cafe would get it." };
+  }
+
+  const supabase = await createServerSupabase();
+  const { error } = await supabase.from("contact_messages").insert(values);
+  if (error) {
+    return { values, error: "Sorry, we couldn’t send your message. Please try again or call us." };
+  }
+  return { ok: true, message: "Thank you! We’ve got your message and will reply by email soon." };
 }
