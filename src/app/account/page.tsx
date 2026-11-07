@@ -4,6 +4,7 @@ import { connection } from "next/server";
 import { Suspense } from "react";
 import { signOut } from "@/app/login/actions";
 import { AddressBook } from "@/components/account/address-book";
+import { OrderHistory } from "@/components/account/order-history";
 import { ProfileForm } from "@/components/account/profile-form";
 import { ArrowLink } from "@/components/arrow-link";
 import { DishCard } from "@/components/dish-card";
@@ -22,7 +23,7 @@ export default function AccountPage() {
         title="My account"
         textWidth="max-w-[420px]"
       >
-        Your details, saved addresses and favourite dishes — all in one place.
+        Your orders, details, saved addresses and favourite dishes — all in one place.
       </PageHero>
 
       <section className="mx-auto max-w-[1440px] px-4 pt-10 pb-24 md:px-10 lg:pt-[120px]">
@@ -47,8 +48,16 @@ async function AccountContent() {
   // Не вошёл — отправляем на страницу входа
   if (!user) redirect("/login");
 
-  // Профиль, адреса и избранное читаем одновременно. RLS сам вернёт только данные этого человека.
-  const [{ data: profile }, { data: addresses }, { data: favorites }] = await Promise.all([
+  // Заказы, профиль, адреса и избранное читаем одновременно. RLS сам вернёт только данные этого человека.
+  const [{ data: orders }, { data: profile }, { data: addresses }, { data: favorites }] = await Promise.all([
+    // Только свои (админ по правилам видит все заказы) и только оплаченные — «брошенные» попытки не нужны
+    supabase
+      .from("orders")
+      .select("id, status, order_type, total_grosze, created_at, order_items (quantity)")
+      .eq("user_id", user.id)
+      .not("paid_at", "is", null)
+      .order("created_at", { ascending: false })
+      .limit(20),
     supabase.from("profiles").select("full_name, phone").eq("id", user.id).single(),
     supabase.from("addresses").select("*").order("created_at"),
     supabase
@@ -62,6 +71,10 @@ async function AccountContent() {
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start">
       <div className="flex flex-col gap-8">
+        <AccountCard title="My orders" glowAngle="45deg">
+          <OrderHistory orders={orders ?? []} />
+        </AccountCard>
+
         <AccountCard title="My details" glowAngle="315deg">
           <ProfileForm email={user.email ?? ""} fullName={profile?.full_name ?? null} phone={profile?.phone ?? null} />
         </AccountCard>
@@ -96,9 +109,6 @@ async function AccountContent() {
           </p>
           {profile?.full_name && <p className="text-base font-medium break-all text-black/60">{user.email}</p>}
         </div>
-        <p className="rounded-lg bg-bark/5 p-4 text-base leading-[1.4] font-medium text-black/70">
-          Your order history will appear here soon.
-        </p>
         <form action={signOut}>
           <button
             type="submit"

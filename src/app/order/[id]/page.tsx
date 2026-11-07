@@ -2,9 +2,12 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { connection } from "next/server";
 import { Suspense } from "react";
+import { StatusBadge } from "@/components/account/order-history";
+import { ArrowLink } from "@/components/arrow-link";
 import { ClearCart } from "@/components/checkout/clear-cart";
 import { PageHero } from "@/components/page-hero";
 import { formatPrice } from "@/lib/format";
+import { ORDER_TYPE_LABELS, formatOrderTime, shortOrderId } from "@/lib/order-status";
 import { confirmOrderPayment } from "@/lib/stripe";
 import { createAdminSupabase } from "@/lib/supabase/admin";
 
@@ -12,7 +15,7 @@ export const metadata: Metadata = { title: "Your order" };
 
 // Страница заказа. Сюда Stripe возвращает гостя после оплаты.
 // Номер заказа — длинный случайный код (uuid), поэтому чужой заказ по ссылке не угадать.
-// Подробную страницу со статусом в реальном времени сделаем на этапе 6.3 / 7.
+// Статус не обновляется сам — чтобы увидеть новый, страницу обновляют (этап 7, упрощённо).
 export default function OrderPage({ params, searchParams }: PageProps<"/order/[id]">) {
   return (
     <>
@@ -56,7 +59,9 @@ async function OrderDetails({
 
   const { data: order } = await createAdminSupabase()
     .from("orders")
-    .select("id, status, order_type, total_grosze, scheduled_for, table_number, order_items (dish_name, quantity, unit_price_grosze)")
+    .select(
+      "id, status, order_type, subtotal_grosze, delivery_fee_grosze, total_grosze, scheduled_for, table_number, delivery_street, delivery_apartment, delivery_postal_code, delivery_city, order_items (dish_name, quantity, unit_price_grosze)",
+    )
     .eq("id", id)
     .single();
   if (!order) notFound();
@@ -68,9 +73,12 @@ async function OrderDetails({
       {/* Оплачено — корзину больше не держим */}
       {isPaid && <ClearCart />}
 
-      <p className="text-base font-medium text-black/60">
-        Order <span className="font-display text-black">{order.id.slice(0, 8).toUpperCase()}</span>
-      </p>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <p className="text-base font-medium text-black/60">
+          Order <span className="font-display text-black">{shortOrderId(order.id)}</span>
+        </p>
+        <StatusBadge status={order.status} />
+      </div>
       <h2 className="font-display text-[28px] leading-[1.2] font-medium text-accent md:text-4xl">
         {order.status === "cancelled"
           ? "This order was cancelled"
@@ -78,6 +86,34 @@ async function OrderDetails({
             ? "Payment received"
             : "Waiting for payment confirmation…"}
       </h2>
+
+      <dl className="grid gap-x-6 gap-y-2 border-t border-bark/20 pt-4 text-base font-medium sm:grid-cols-[auto_1fr]">
+        <dt className="text-black/60">How</dt>
+        <dd>{ORDER_TYPE_LABELS[order.order_type]}</dd>
+        {order.order_type === "dine_in" ? (
+          <>
+            <dt className="text-black/60">Table</dt>
+            <dd>{order.table_number}</dd>
+          </>
+        ) : (
+          order.scheduled_for && (
+            <>
+              <dt className="text-black/60">{order.order_type === "delivery" ? "Delivery time" : "Pickup time"}</dt>
+              <dd>{formatOrderTime(order.scheduled_for)}</dd>
+            </>
+          )
+        )}
+        {order.order_type === "delivery" && (
+          <>
+            <dt className="text-black/60">Address</dt>
+            <dd>
+              {order.delivery_street}
+              {order.delivery_apartment ? `, apt ${order.delivery_apartment}` : ""}, {order.delivery_postal_code}{" "}
+              {order.delivery_city}
+            </dd>
+          </>
+        )}
+      </dl>
 
       <ul className="flex flex-col gap-2 border-t border-bark/20 pt-4 text-base font-medium">
         {order.order_items.map((item) => (
@@ -89,10 +125,23 @@ async function OrderDetails({
           </li>
         ))}
       </ul>
+      {order.delivery_fee_grosze > 0 && (
+        <p className="flex justify-between text-base font-medium">
+          <span className="text-black/70">Delivery</span>
+          <span className="tabular-nums">{formatPrice(order.delivery_fee_grosze)}</span>
+        </p>
+      )}
       <p className="flex justify-between border-t border-bark/20 pt-4 text-xl font-medium">
         <span>Total</span>
         <span className="font-display tabular-nums">{formatPrice(order.total_grosze)}</span>
       </p>
+
+      {isPaid && order.status !== "completed" && (
+        <p className="rounded-lg bg-bark/5 p-4 text-base leading-[1.4] font-medium text-black/70">
+          Refresh this page to see the latest status of your order.
+        </p>
+      )}
+      <ArrowLink href="/menu">Back to menu</ArrowLink>
     </div>
   );
 }
