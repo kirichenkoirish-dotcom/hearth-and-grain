@@ -139,7 +139,7 @@ function HeaderView({ pathname }: { pathname: string }) {
 
 function Logo({ onClick }: { onClick: () => void }) {
   return (
-    <Link href="/" onClick={onClick} className="flex items-center gap-3">
+    <Link href="/" onClick={onClick} className="flex items-center gap-2 min-[360px]:gap-3">
       <Image
         src="/images/logo-bean.png"
         alt=""
@@ -148,7 +148,7 @@ function Logo({ onClick }: { onClick: () => void }) {
         className="h-[27px] w-[22px] -rotate-[28deg] object-contain"
         priority
       />
-      <span className="font-logo text-xl leading-none font-medium tracking-[0.48px] whitespace-nowrap md:text-2xl">
+      <span className="font-logo text-lg leading-none font-medium tracking-[0.48px] whitespace-nowrap min-[360px]:text-xl md:text-2xl">
         Hearth &amp; Grain
       </span>
     </Link>

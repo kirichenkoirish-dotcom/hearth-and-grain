@@ -50,11 +50,11 @@ export default async function MenuPage() {
               <div className="mb-5 flex items-center gap-6">
                 <h2
                   id={`${category.slug}-title`}
-                  className="font-display shrink-0 text-[28px] leading-[1.2] font-medium tracking-[-0.36px] text-accent md:text-4xl"
+                  className="font-display text-[28px] leading-[1.2] font-medium tracking-[-0.36px] text-accent md:shrink-0 md:text-4xl"
                 >
                   {category.name}
                 </h2>
-                <span aria-hidden="true" className="h-px flex-1 bg-bark/50" />
+                <span aria-hidden="true" className="h-px min-w-10 flex-1 bg-bark/50" />
               </div>
 
               <div className="grid gap-2 sm:grid-cols-2">

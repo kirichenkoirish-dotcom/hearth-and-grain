@@ -18,7 +18,7 @@ const utilityLinks = [
 export function Footer() {
   return (
     <footer className="bg-espresso text-cream">
-      <div className="mx-auto grid max-w-[1440px] gap-10 px-4 pt-14 pb-10 md:grid-cols-2 md:px-10 lg:grid-cols-[1fr_1fr_minmax(0,507px)] lg:gap-[106px]">
+      <div className="mx-auto grid max-w-[1440px] grid-cols-1 gap-10 px-4 pt-14 pb-10 md:grid-cols-2 md:px-10 lg:grid-cols-[1fr_1fr_minmax(0,507px)] lg:gap-[106px]">
         <FooterColumn title="Navigation">
           <FooterLinks links={navigationLinks} />
         </FooterColumn>
