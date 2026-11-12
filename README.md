@@ -10,7 +10,7 @@ online payment, customer accounts and an admin panel for the cafe staff.
 > This is a portfolio project. On the live demo no real order is placed and no payment is taken —
 > after “Pay” you see a demo page instead. The full payment flow works in Stripe test mode.
 
-Designed and built by [Senvori.Agency](https://www.instagram.com/senvori.agency/).
+Designed and built by [Iryna Kyrychenko](https://www.instagram.com/ivelensi_school).
 
 ## Features
 

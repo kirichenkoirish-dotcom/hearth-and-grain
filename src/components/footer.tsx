@@ -47,7 +47,7 @@ export function Footer() {
               rel="noopener noreferrer"
               className="underline-offset-4 transition-colors hover:text-cream hover:underline"
             >
-              Senvori.Agency
+              Iryna Kyrychenko
             </a>
           </p>
         </div>

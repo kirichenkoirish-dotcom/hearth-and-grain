@@ -19,9 +19,9 @@ export const CAFE = {
 // Свободное имя на vercel.app (hearth-and-grain.vercel.app занято другим сайтом).
 export const SITE_URL = "https://hearth-and-grain-cafe.vercel.app";
 
-// Соцсети автора сайта (студия Senvori.Agency)
+// Соцсети автора сайта — Iryna Kyrychenko
 export const SOCIAL = {
-  instagram: "https://www.instagram.com/senvori.agency/",
+  instagram: "https://www.instagram.com/ivelensi_school",
   youtube: "https://www.youtube.com/@IVELENSI_school/videos",
   // Telegram: @Iryna_webdesigner
   telegram: "https://t.me/Iryna_webdesigner",

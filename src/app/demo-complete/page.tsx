@@ -36,8 +36,8 @@ export default function DemoCompletePage() {
           </p>
           <p className="text-lg leading-[1.4] font-medium text-black/70">
             This website was designed and built by{" "}
-            <span className="text-black">Senvori.Agency</span>. Visit our Instagram to see more of
-            our work.
+            <span className="text-black">Iryna Kyrychenko</span>. Visit my Instagram to see more of
+            my work.
           </p>
 
           <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:gap-6">
@@ -47,7 +47,7 @@ export default function DemoCompletePage() {
               rel="noopener noreferrer"
               className="btn-roast font-display rounded-full px-[30px] py-[15px] text-center text-base leading-none font-medium tracking-[0.32px]"
             >
-              Visit our Instagram
+              Visit my Instagram
             </a>
             <Link
               href="/"
